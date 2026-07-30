@@ -67,6 +67,10 @@
           <input id="e-company" name="company" type="text" placeholder="브랜드 / 회사명" required />
         </div>
         <div class="field">
+          <label for="e-name">담당자명</label>
+          <input id="e-name" name="name" type="text" placeholder="예: 홍길동" required />
+        </div>
+        <div class="field">
           <label for="e-email">이메일 주소</label>
           <input id="e-email" name="email" type="email" placeholder="name@example.com" required />
         </div>
@@ -532,16 +536,17 @@
   entryForm.addEventListener('submit', function(e){
     e.preventDefault();
     var f=entryForm;
-    var company=f.elements['company'].value.trim(), email=f.elements['email'].value.trim();
+    var company=f.elements['company'].value.trim(), name=f.elements['name'].value.trim(), email=f.elements['email'].value.trim();
     var ok=true;
     f.elements['company'].classList.toggle('invalid', !company); if(!company) ok=false;
+    f.elements['name'].classList.toggle('invalid', !name); if(!name) ok=false;
     var emailOk = email && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
     f.elements['email'].classList.toggle('invalid', !emailOk); if(!emailOk) ok=false;
     if(!ok) return;
     if(INQUIRY_ENDPOINT){
       fetch(INQUIRY_ENDPOINT, { method:'POST', mode:'no-cors',
         headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-        body: new URLSearchParams({ type:'view', company:company, email:email, message:'🆕 소개서 첫 열람 리드 (아웃바운드 대상)' }).toString()
+        body: new URLSearchParams({ type:'view', company:company, name:name, email:email, message:'🆕 소개서 첫 열람 리드 (아웃바운드 대상)' }).toString()
       }).catch(function(){});
     }
     try{ localStorage.setItem('nys_lead_submitted','1'); }catch(_){}
